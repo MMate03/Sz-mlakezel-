@@ -23,6 +23,9 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String password;
 
     private LocalDate loginDate;
