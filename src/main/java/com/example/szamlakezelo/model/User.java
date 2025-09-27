@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -25,6 +27,12 @@ public class User {
 
     private LocalDate loginDate;
 
-    @Column(nullable = false)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+
+    private Set<Role> role = new HashSet<>();
 }

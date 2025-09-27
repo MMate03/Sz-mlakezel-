@@ -1,7 +1,16 @@
 package com.example.szamlakezelo.model;
 
-public enum Role {
-    ROLE_ADMIN,
-    ROLE_ACCOUNTANT,
-    ROLE_USER
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Role_enum name;
+
 }
+
