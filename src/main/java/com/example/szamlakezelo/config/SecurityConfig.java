@@ -1,6 +1,11 @@
 package com.example.szamlakezelo.config;
 
+import com.example.szamlakezelo.service.LoginAttemptService;
 import com.example.szamlakezelo.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +21,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final LoginAttemptService loginAttemptService;
+
+    @Autowired
+    public SecurityConfig(LoginAttemptService loginAttemptService) {
+        this.loginAttemptService = loginAttemptService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,6 +49,8 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/home", true)
+                        .failureHandler(customAuthenticationFailureHandler()) // <-- important!
+                        .successHandler(customAuthenticationSuccessHandler()) // <-- important!
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -60,6 +79,36 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
+    @Bean
+    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                                org.springframework.security.core.AuthenticationException exception)
+                    throws java.io.IOException, ServletException {
+                String username = request.getParameter("username");
+                loginAttemptService.loginFailed(username); // track failed login
+                request.getSession().setAttribute("errorMessage", "Hibás felhasználónév vagy jelszó");
+                request.getSession().setAttribute("username", username);
+
+                response.sendRedirect("/login");
+
+            }
+        };
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            String username = authentication.getName();
+            loginAttemptService.loginSucceeded(username); // reset failed attempts
+            response.sendRedirect("/home");
+        };
+    }
 }
+
+
+
 
 

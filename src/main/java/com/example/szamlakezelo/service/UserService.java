@@ -41,15 +41,12 @@ public class UserService implements UserDetailsService {
         User existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser == null) {
             user.setPassword(encoder.encode(user.getPassword()));
-            Role userRole = roleRepository.findByName(Role_enum.ROLE_USER);
-            user.setRole(new HashSet<>());
-            user.getRole().add(userRole);
             userRepository.save(user);
+        }else {
+            throw new IllegalArgumentException("Ez a felhasználónév már létezik!");
         }
 
     }
-
-
 
 
     public User findByUsername(String username) {
@@ -60,7 +57,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("Hibás felhsználónév vagy jelszó");
         }
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
@@ -68,4 +65,5 @@ public class UserService implements UserDetailsService {
                 .roles("USER")
                 .build();
     }
+
 }
