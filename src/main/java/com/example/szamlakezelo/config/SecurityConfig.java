@@ -33,6 +33,13 @@ public class SecurityConfig {
 
     private final LoginAttemptService loginAttemptService;
 
+    private  UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @Autowired
     public SecurityConfig(LoginAttemptService loginAttemptService) {
         this.loginAttemptService = loginAttemptService;
@@ -102,7 +109,8 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
             String username = authentication.getName();
-            loginAttemptService.loginSucceeded(username); // reset failed attempts
+            loginAttemptService.loginSucceeded(username);
+            userService.setLoginDate(username);
             response.sendRedirect("/home");
         };
     }

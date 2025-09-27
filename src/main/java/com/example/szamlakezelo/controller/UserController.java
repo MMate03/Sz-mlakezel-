@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+
 @Controller
 public class UserController {
     private UserService userService;
@@ -41,7 +43,7 @@ public class UserController {
         if (username != null) {
             model.addAttribute("username", username);
         }
-        
+
         if (username != null && loginAttemptService.isCaptchaRequired(username)) {
             model.addAttribute("showCaptcha", true);
         }
@@ -72,6 +74,15 @@ public class UserController {
             model.addAttribute("roles", roleService.getRolesNoAdmin());
             return "register"; // visszatérés a regisztrációs oldalra
         }
+    }
+
+    @GetMapping("/home")
+    public String home(Model model, Principal principal) {
+        User user=userService.findByUsername(principal.getName());
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("loginDate", user.getLoginDate());
+        model.addAttribute("roles", user.getRole());
+        return "home";
     }
 
 

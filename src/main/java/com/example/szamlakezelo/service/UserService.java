@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 
 
@@ -51,6 +52,12 @@ public class UserService implements UserDetailsService {
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public void setLoginDate(String username) {
+        User user = userRepository.findByUsername(username);
+        user.setLoginDate(LocalDate.now());
+        userRepository.save(user);
     }
 
     @Override
