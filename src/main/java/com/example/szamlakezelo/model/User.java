@@ -39,5 +39,14 @@ public class User {
 
     private Set<Role> role = new HashSet<>();
 
+    public Set<Role> getRoles() {
+        return role;
+    }
+
+    public void setRoles(Set<Role> newRoles) {
+        this.role = newRoles;
+
+    }
+
 
 }

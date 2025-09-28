@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- HEADER   -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <span class="navbar-text">
@@ -34,13 +34,13 @@
     <div class="d-flex flex-column align-items-center gap-3 mt-4">
 
         <a th:if="${#lists.contains(roles.![name.name], 'ROLE_ADMIN')}"
-           href="/admin"
+           th:href="@{/admin/users}"
            class="btn btn-primary btn-lg w-50">
             Adminisztráció
         </a>
 
         <a th:href="@{/invoices}" class="btn btn-secondary btn-lg w-50">Számlák</a>
-        <a href="/uj-szamla" class="btn btn-success btn-lg w-50">Új számla</a>
+
     </div>
 </div>
 

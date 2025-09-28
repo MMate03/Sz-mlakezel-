@@ -2,14 +2,11 @@ package com.example.szamlakezelo.service;
 
 
 import com.example.szamlakezelo.model.Role;
-import com.example.szamlakezelo.model.Role_enum;
 import com.example.szamlakezelo.model.User;
 import com.example.szamlakezelo.repo.RoleRepository;
 import com.example.szamlakezelo.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -71,4 +69,24 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public void updateUserRoles(Long id, List<String> roles) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            Set<Role> newRoles = roleRepository.findByNameIn(roles);
+
+            user.setRoles(newRoles);
+            userRepository.save(user);
+        }
+    }
 }

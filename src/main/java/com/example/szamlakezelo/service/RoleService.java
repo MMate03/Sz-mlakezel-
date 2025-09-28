@@ -25,4 +25,7 @@ public class RoleService {
                 .toList();
     }
 
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
 }
