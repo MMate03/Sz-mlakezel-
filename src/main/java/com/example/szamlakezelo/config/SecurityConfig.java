@@ -41,6 +41,9 @@ public class SecurityConfig {
     }
 
     @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
     public SecurityConfig(LoginAttemptService loginAttemptService) {
         this.loginAttemptService = loginAttemptService;
     }
@@ -50,6 +53,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/invoices/add").hasAnyAuthority("ROLE_ADMIN", "ROLE_ACCOUNTANT")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -82,7 +86,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider(UserService userService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userService); // use UserService directly
+        provider.setUserDetailsService(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -114,6 +118,8 @@ public class SecurityConfig {
             response.sendRedirect("/home");
         };
     }
+
+
 }
 
 

@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -24,9 +26,19 @@ public class InvoiceController {
     @GetMapping
     public String getInvoices(Model model) {
         List<Invoice> invoices = invoiceService.findAll();
-        System.out.println("Test--------------------------------------------------------------");
-        System.out.println(invoices);
         model.addAttribute("invoices", invoices);
         return "invoices";
+    }
+
+    @GetMapping("/add")
+    public String addInvoice(Model model) {
+        model.addAttribute("today", LocalDate.now());
+        return "create_invoice";
+    }
+
+    @PostMapping("/add")
+    public String addInvoice(Invoice invoice) {
+        invoiceService.save(invoice);
+        return "redirect:/invoices";
     }
 }

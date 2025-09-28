@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Új Számla Létrehozása</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <span class="navbar-text">
+            Felhasználó: <strong th:text="${username}">Username</strong> |
+            Bejelentkezés ideje: <strong th:text="${loginDate}">2025-09-27 17:45</strong> |
+            Szerepkör:
+             <span th:each="role, iterStat : ${roles}">
+                <strong th:text="${role.name.displayName}">RoleName</strong><span th:if="${!iterStat.last}">, </span>
+            </span>
+        </span>
+
+        <div class="ms-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Új Számla Létrehozása</h1>
+
+    <form th:action="@{/invoices/add}" method="post">
+        <div class="mb-3">
+            <label for="customerName" class="form-label">Ügyfél neve</label>
+            <input type="text" class="form-control" id="customerName" name="customerName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="issueDate" class="form-label">Kibocsátás dátuma</label>
+            <input type="date" class="form-control" id="issueDate" name="issueDate" th:value="${today}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="dueDate" class="form-label">Fizetési határidő</label>
+            <input type="date" class="form-control" id="dueDate" name="dueDate" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="itemName" class="form-label">Tétel neve</label>
+            <input type="text" class="form-control" id="itemName" name="itemName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Összeg</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="comment" class="form-label">Megjegyzés</label>
+            <textarea class="form-control" id="comment" name="comment"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Számla létrehozása</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -15,5 +15,6 @@ public class MscConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/register").setViewName("register");
         registry.addViewController("/invoices").setViewName("invoices");
+        registry.addViewController("/invoices/add").setViewName("create_invoice");
     }
 }

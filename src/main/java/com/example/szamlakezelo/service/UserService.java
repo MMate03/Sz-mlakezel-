@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;
 
 
 @Service
@@ -39,33 +40,30 @@ public class UserService implements UserDetailsService {
 
 
     public void register(User user) {
-        User existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser == null) {
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser.isEmpty()) {
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
-        }else {
+        } else {
             throw new IllegalArgumentException("Ez a felhasználónév már létezik!");
         }
-
     }
 
-
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     public void setLoginDate(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Felhasználó nem található"));
         user.setLoginDate(LocalDate.now());
         userRepository.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Hibás felhsználónév vagy jelszó");
-        }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Hibás felhasználó név vagy jelszó"));
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())

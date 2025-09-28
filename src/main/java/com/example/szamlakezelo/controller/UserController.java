@@ -8,12 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -78,7 +76,8 @@ public class UserController {
 
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
-        User user=userService.findByUsername(principal.getName());
+        User user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new IllegalArgumentException("Felhasználó nem található"));
         model.addAttribute("username", user.getUsername());
         model.addAttribute("loginDate", user.getLoginDate());
         model.addAttribute("roles", user.getRole());
@@ -90,6 +89,17 @@ public class UserController {
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
+    }
+
+    @GetMapping("/debugRoles")
+    @ResponseBody
+    public String debugRoles(Principal principal) {
+        User user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new IllegalArgumentException("Felhasználó nem található"));
+        return "Jogosultságok: " +
+                user.getRole().stream()
+                        .map(r -> r.getName().name())
+                        .collect(Collectors.joining(", "));
     }
 }
 
