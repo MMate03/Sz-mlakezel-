@@ -30,11 +30,10 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request, Model model) {
-        // Ha van hibaüzenet a sessionben → hozzáadjuk a modelhez
         String errorMessage = (String) request.getSession().getAttribute("errorMessage");
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
-            request.getSession().removeAttribute("errorMessage"); // ha szeretnéd, hogy csak egyszer jelenjen meg
+            request.getSession().removeAttribute("errorMessage");
         }
 
         String username = (String) request.getSession().getAttribute("username");
@@ -70,7 +69,7 @@ public class UserController {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("user", user);
             model.addAttribute("roles", roleService.getRolesNoAdmin());
-            return "register"; // visszatérés a regisztrációs oldalra
+            return "register";
         }
     }
 

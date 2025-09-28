@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -40,5 +41,13 @@ public class InvoiceController {
     public String addInvoice(Invoice invoice) {
         invoiceService.save(invoice);
         return "redirect:/invoices";
+    }
+
+    @GetMapping("/{id}")
+    public String viewInvoice(@PathVariable Long id, Model model) {
+        Invoice invoice = invoiceService.getInvoiceById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Nem található ilyen számla"));;
+        model.addAttribute("invoice", invoice);
+        return "invoice";
     }
 }

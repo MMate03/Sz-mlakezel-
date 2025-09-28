@@ -48,7 +48,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="invoice, iterStat : ${invoices}">
+            <tr th:each="invoice, iterStat : ${invoices}"
+                th:onclick="|window.location.href='@{/invoices/{id}(id=${invoice.id})}'|"
+                style="cursor:pointer;">
                 <td th:text="${iterStat.index + 1}"></td>
                 <td th:text="${invoice.issueDate}"></td>
                 <td th:text="${invoice.dueDate}"></td>
@@ -58,6 +60,7 @@
                 <td th:text="${invoice.comment}"></td>
             </tr>
             </tbody>
+
         </table>
     </div>
 </div>
