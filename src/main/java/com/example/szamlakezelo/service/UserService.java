@@ -39,6 +39,17 @@ public class UserService implements UserDetailsService {
 
     public void register(User user) {
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (user.getUsername() == null || user.getUsername().length() < 5) {
+            throw new IllegalArgumentException("A felhasználónévnek legalább 5 karakter hosszúnak kell lennie!");
+        }
+        if (user.getName() == null || user.getName().length() < 5) {
+            throw new IllegalArgumentException("A névnek legalább 5 karakter hosszúnak kell lennie!");
+        }
+
+        String password = user.getPassword();
+        if (!isValidPassword(password)) {
+            throw new IllegalArgumentException("A jelszónak legalább 10 karakter hosszúnak kell lennie, tartalmaznia kell legalább 1 nagybetűt és 1 számot!");
+        }
         if (existingUser.isEmpty()) {
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
@@ -88,5 +99,14 @@ public class UserService implements UserDetailsService {
             user.setRoles(newRoles);
             userRepository.save(user);
         }
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password == null || password.length() < 10) {
+            return false;
+        }
+        boolean hasUppercase = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        return hasUppercase && hasDigit;
     }
 }
