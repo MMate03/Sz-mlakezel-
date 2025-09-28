@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/invoce")
+@RequestMapping("/invoices")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
@@ -24,6 +24,8 @@ public class InvoiceController {
     @GetMapping
     public String getInvoices(Model model) {
         List<Invoice> invoices = invoiceService.findAll();
+        System.out.println("Test--------------------------------------------------------------");
+        System.out.println(invoices);
         model.addAttribute("invoices", invoices);
         return "invoices";
     }
