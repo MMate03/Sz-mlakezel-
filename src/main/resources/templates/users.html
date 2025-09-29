@@ -8,12 +8,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
-<body>
+<body style="background: lightgrey">
 
-<nav class="navbar navbar-expand-lg navbar-light " style="background: slategray">
+<nav class="navbar navbar-expand-lg navbar-light shadow" style="background: slategray">
     <div class="container-fluid">
 
-        <button onclick="history.back()" class="btn btn-primary">Vissza</button>
+        <button onclick="history.back()" class="btn btn-dark shadow">Vissza</button>
 
 
     </div>
@@ -22,45 +22,46 @@
 <div class="container mt-4">
     <h1>Felhasználók kezelése</h1>
 
-    <table class="table table-striped table-bordered mt-3">
-        <thead>
-        <tr>
-            <th>Felhasználónév</th>
-            <th>Szerepkörök</th>
-            <th>Műveletek</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.username}"></td>
-            <td>
-                <form th:action="@{'/admin/users/updateRoles/' + ${user.id}}" method="post">
-                    <select name="roles" multiple class="form-select select2">
-                        <option th:each="role : ${roles}" th:value="${role.name}"
-                                th:text="${role.name.displayName}"
-                                th:selected="${user.roles.contains(role)}"></option>
-                    </select>
-
-                    <button type="submit" class="btn btn-primary btn-sm mt-2">Mentés</button>
-                </form>
-
-            </td>
-            <td>
-                <form th:action="@{'/admin/users/delete/' + ${user.id}}" method="post"
-                      th:onsubmit="return confirm('Biztos törölni szeretnéd ezt a felhasználót?')">
-                    <button type="submit" class="btn btn-danger btn-sm">Törlés</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto; border-radius: 0.5rem;">
+        <table class="table table-striped table-bordered mt-3 rounded shadow">
+            <thead class="table-dark">
+            <tr>
+                <th class="shadow" style="background: slategray; color: white; position: sticky; top: 0; z-index: 10;">Felhasználónév</th>
+                <th class="shadow" style="background: slategray; color: white; position: sticky; top: 0; z-index: 10;">Szerepkörök</th>
+                <th class="shadow" style="background: slategray; color: white; position: sticky; top: 0; z-index: 10;">Műveletek</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}" class="align-middle text-center"></td>
+                <td class="align-middle">
+                    <form th:action="@{'/admin/users/updateRoles/' + ${user.id}}" method="post" >
+                        <select name="roles" multiple class="form-select select2 " style="max-width: 50em">
+                            <option th:each="role : ${roles}" th:value="${role.name}"
+                                    th:text="${role.name.displayName}"
+                                    th:selected="${user.roles.contains(role)}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-dark btn-sm mt-2 shadow ">Mentés</button>
+                    </form>
+                </td>
+                <td class="align-middle text-center">
+                    <form th:action="@{'/admin/users/delete/' + ${user.id}}" method="post"
+                          th:onsubmit="return confirm('Biztos törölni szeretnéd ezt a felhasználót?')">
+                        <button type="submit" class="btn btn-danger btn-sm shadow">Törlés</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.select2').select2({
             placeholder: "Válassz szerepköröket",
-            allowClear: true,
+            allowClear: true
+
 
         });
 

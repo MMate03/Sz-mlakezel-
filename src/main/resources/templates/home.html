@@ -6,10 +6,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
-<body>
+<body style="background: lightgrey">
 
 
-<nav class="navbar navbar-expand-lg navbar-light " style="background: slategray">
+<nav class="navbar navbar-expand-lg navbar-light shadow" style="background: slategray">
     <div class="container-fluid">
         <span class="navbar-text">
             Felhasználó: <strong th:text="${username}">Username</strong> |
@@ -22,7 +22,7 @@
 
         <div class="ms-auto">
             <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn btn-danger">Logout</button>
+                <button type="submit" class="btn btn-danger shadow">Logout</button>
             </form>
         </div>
     </div>
@@ -36,11 +36,11 @@
 
         <a th:if="${#lists.contains(roles.![name.name], 'ROLE_ADMIN')}"
            th:href="@{/admin/users}"
-           class="btn btn-primary btn-lg w-50">
+           class="btn btn-warning btn-md w-25 shadow">
             Adminisztráció
         </a>
 
-        <a th:href="@{/invoices}" class="btn btn-secondary btn-lg w-50">Számlák</a>
+        <a th:href="@{/invoices}" class="btn btn-dark btn-md w-25 shadow">Számlák</a>
 
     </div>
 </div>

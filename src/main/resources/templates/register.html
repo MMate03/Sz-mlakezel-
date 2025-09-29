@@ -6,7 +6,7 @@
     <title>Regisztráció</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body style="background: lightgrey">
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -18,19 +18,19 @@
             <form th:action="@{/register}" th:object="${user}" method="post" novalidate>
                 <div class="mb-3">
                     <label for="felhasznalonev" class="form-label">Felhasználónév</label>
-                    <input type="text" th:field="*{username}" class="form-control" id="felhasznalonev" required>
+                    <input type="text" th:field="*{username}" class="form-control shadow" id="felhasznalonev" required>
                     <div class="text-danger small" id="usernameError" style="display:none;">Minimum 5 karakter.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="nev" class="form-label">Név</label>
-                    <input type="text" th:field="*{name}" class="form-control" id="nev" required>
+                    <input type="text" th:field="*{name}" class="form-control shadow" id="nev" required>
                     <div class="text-danger small" id="nameError" style="display:none;">Minimum 5 karakter.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="jelszo" class="form-label">Jelszó</label>
-                    <input type="password" th:field="*{password}" class="form-control" id="jelszo" required>
+                    <input type="password" th:field="*{password}" class="form-control shadow" id="jelszo" required>
                     <div class="text-danger small" id="passwordError" style="display:none;">
                         Legalább 10 karakter, 1 nagybetű, 1 szám szükséges.
                     </div>
@@ -38,7 +38,7 @@
 
                 <div class="mb-3">
                     <label for="confirmPassword" class="form-label">Jelszó újra</label>
-                    <input type="password" class="form-control" id="confirmPassword" required>
+                    <input type="password" class="form-control shadow" id="confirmPassword" required>
                     <div class="text-danger small" id="confirmPasswordError" style="display:none;">
                         A jelszavak nem egyeznek!
                     </div>
@@ -46,7 +46,7 @@
 
                 <div class="mb-3">
                     <label for="role" class="form-label">Szerepkör</label>
-                    <select class="form-select" th:field="*{role}" id="role" required>
+                    <select class="form-select shadow" th:field="*{role}" id="role" required>
                         <option value="" disabled selected>Válassz szerepkört</option>
                         <option th:each="role : ${roles}"
                                 th:value="${role.id}"
@@ -55,7 +55,7 @@
                     <div class="invalid-feedback">Kérlek válassz szerepkört!</div>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100" id="registerBtn" disabled>Regisztráció</button>
+                <button type="submit" class="btn btn-dark w-100 shadow" id="registerBtn" disabled>Regisztráció</button>
             </form>
 
 
