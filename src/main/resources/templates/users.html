@@ -35,15 +35,18 @@
             <tr th:each="user : ${users}">
                 <td th:text="${user.username}" class="align-middle text-center"></td>
                 <td class="align-middle">
-                    <form th:action="@{'/admin/users/updateRoles/' + ${user.id}}" method="post" >
-                        <select name="roles" multiple class="form-select select2 " style="max-width: 50em">
-                            <option th:each="role : ${roles}" th:value="${role.name}"
-                                    th:text="${role.name.displayName}"
-                                    th:selected="${user.roles.contains(role)}"></option>
-                        </select>
-                        <button type="submit" class="btn btn-dark btn-sm mt-2 shadow ">Mentés</button>
+                    <form th:action="@{'/admin/users/updateRoles/' + ${user.id}}" method="post">
+                        <div class="d-flex align-items-center justify-content-between" style="max-width: 50em">
+                            <select name="roles" multiple class="form-select select2 me-2">
+                                <option th:each="role : ${roles}" th:value="${role.name}"
+                                        th:text="${role.name.displayName}"
+                                        th:selected="${user.roles.contains(role)}"></option>
+                            </select>
+                            <button type="submit" class="btn btn-dark btn-sm shadow">Mentés</button>
+                        </div>
                     </form>
                 </td>
+
                 <td class="align-middle text-center">
                     <form th:action="@{'/admin/users/delete/' + ${user.id}}" method="post"
                           th:onsubmit="return confirm('Biztos törölni szeretnéd ezt a felhasználót?')">
