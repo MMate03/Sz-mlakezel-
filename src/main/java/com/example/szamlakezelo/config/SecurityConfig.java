@@ -72,8 +72,11 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable());
 
-        http.addFilterBefore(new CaptchaFilter(customAuthenticationFailureHandler()),
-                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(
+                new CaptchaFilter(customAuthenticationFailureHandler(), loginAttemptService),
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+        );
+
 
         return http.build();
     }

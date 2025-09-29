@@ -23,4 +23,7 @@ public class LoginAttemptService {
     public boolean isCaptchaRequired(String username) {
         return attemptsCache.getOrDefault(username, 0) >= MAX_ATTEMPT;
     }
+
+
+
 }

@@ -14,6 +14,9 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private Role_enum name;
 
+    @Column
+    private String description;
+
 
 }
 

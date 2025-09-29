@@ -1,5 +1,6 @@
 package com.example.szamlakezelo.config;
 
+import com.example.szamlakezelo.service.LoginAttemptService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,9 +14,11 @@ import java.io.IOException;
 public class CaptchaFilter extends OncePerRequestFilter {
 
     private final AuthenticationFailureHandler failureHandler;
+    private final LoginAttemptService loginAttemptService;
 
-    public CaptchaFilter(AuthenticationFailureHandler failureHandler) {
+    public CaptchaFilter(AuthenticationFailureHandler failureHandler, LoginAttemptService loginAttemptService) {
         this.failureHandler = failureHandler;
+        this.loginAttemptService = loginAttemptService;
     }
 
     @Override
@@ -25,16 +28,21 @@ public class CaptchaFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         if ("/login".equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod())) {
-            String captchaInput = request.getParameter("captcha");
-            String captchaExpected = (String) request.getSession().getAttribute("captcha");
+            String username = request.getParameter("username");
 
-            if (captchaExpected == null || !captchaExpected.equalsIgnoreCase(captchaInput)) {
-                failureHandler.onAuthenticationFailure(
-                        request,
-                        response,
-                        new AuthenticationException("Hibás captcha!") {}
-                );
-                return; 
+            // Csak ha szükséges captcha
+            if (username != null && loginAttemptService.isCaptchaRequired(username)) {
+                String captchaInput = request.getParameter("captcha");
+                String captchaExpected = (String) request.getSession().getAttribute("captcha");
+
+                if (captchaExpected == null || !captchaExpected.equalsIgnoreCase(captchaInput)) {
+                    failureHandler.onAuthenticationFailure(
+                            request,
+                            response,
+                            new AuthenticationException("Hibás captcha!") {}
+                    );
+                    return;
+                }
             }
         }
 
