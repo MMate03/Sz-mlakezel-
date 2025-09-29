@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -108,5 +109,14 @@ public class UserService implements UserDetailsService {
         boolean hasUppercase = password.chars().anyMatch(Character::isUpperCase);
         boolean hasDigit = password.chars().anyMatch(Character::isDigit);
         return hasUppercase && hasDigit;
+    }
+
+    public List<String> findCustomerNames(String query) {
+        return userRepository.findAll().stream()
+                .map(User::getName)
+                .filter(Objects::nonNull)
+                .filter(name -> name.toLowerCase().contains(query.toLowerCase()))
+                .distinct()
+                .toList();
     }
 }

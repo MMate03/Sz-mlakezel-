@@ -52,7 +52,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/captcha.jpg","/css/**", "/js/**").permitAll()
                         .requestMatchers("/invoices/add").hasAnyAuthority("ROLE_ADMIN", "ROLE_ACCOUNTANT")
                         .requestMatchers("admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
@@ -71,6 +71,10 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .csrf(csrf -> csrf.disable());
+
+        http.addFilterBefore(new CaptchaFilter(customAuthenticationFailureHandler()),
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

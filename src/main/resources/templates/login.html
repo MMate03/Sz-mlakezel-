@@ -28,8 +28,11 @@
                 </div>
 
                 <div th:if="${showCaptcha}">
-                    <label>Captcha:</label>
-                    <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+                    <label for="captcha">Captcha:</label>
+                    <div class="mb-2">
+                        <img th:src="@{/captcha.jpg(t=${timestamp})}" alt="captcha"/>
+                    </div>
+                    <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Írd be a képen látható kódot" required/>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100" id="loginBtn" disabled>Bejelentkezés</button>

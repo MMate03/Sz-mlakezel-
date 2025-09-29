@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -30,6 +31,8 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request, Model model) {
+        model.addAttribute("timestamp", System.currentTimeMillis());
+
         String errorMessage = (String) request.getSession().getAttribute("errorMessage");
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
@@ -99,6 +102,12 @@ public class UserController {
                 user.getRole().stream()
                         .map(r -> r.getName().name())
                         .collect(Collectors.joining(", "));
+    }
+
+    @GetMapping("/users/search")
+    @ResponseBody
+    public List<String> searchCustomers(@RequestParam String query) {
+        return userService.findCustomerNames(query.toLowerCase());
     }
 }
 
