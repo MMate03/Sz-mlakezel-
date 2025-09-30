@@ -93,16 +93,7 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/debugRoles")
-    @ResponseBody
-    public String debugRoles(Principal principal) {
-        User user = userService.findByUsername(principal.getName())
-                .orElseThrow(() -> new IllegalArgumentException("Felhasználó nem található"));
-        return "Jogosultságok: " +
-                user.getRole().stream()
-                        .map(r -> r.getName().name())
-                        .collect(Collectors.joining(", "));
-    }
+
 
     @GetMapping("/users/search")
     @ResponseBody

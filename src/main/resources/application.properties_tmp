@@ -16,3 +16,8 @@ spring.jpa.properties.hibernate.entity_manager_factory_interface=jakarta.persist
 logging.level.org.springframework=DEBUG
 logging.level.org.springframework.web=DEBUG
 logging.level.com.example=DEBUG
+
+
+#username:role_admin paswd:test123
+#username:role_user paswd:test123
+#username:role_accountant paswd:test123
