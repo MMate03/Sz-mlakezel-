@@ -18,7 +18,7 @@ public class CaptchaConfig {
         props.setProperty("kaptcha.textproducer.font.size", "40");
         props.setProperty("kaptcha.textproducer.char.length", "5");
         props.setProperty("kaptcha.textproducer.char.string", "ABCDEFGHJKMNPQRSTUVWXYZ23456789");
-        props.setProperty("kaptcha.noise.impl", "com.google.code.kaptcha.impl.NoNoise"); // opcionális
+        props.setProperty("kaptcha.noise.impl", "com.google.code.kaptcha.impl.NoNoise");
         Config config = new Config(props);
         DefaultKaptcha kaptcha = new DefaultKaptcha();
         kaptcha.setConfig(config);

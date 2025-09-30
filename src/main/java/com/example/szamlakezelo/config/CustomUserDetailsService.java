@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         System.out.println("Jogosultságok: " +
                 user.getRole().stream()
-                        .map(role -> role.getName().name()) // Role_enum string neve
+                        .map(role -> role.getName().name())
                         .toList()
         );
 
