@@ -32,7 +32,9 @@
                     <div class="mb-2">
                         <img th:src="@{/captcha.jpg(t=${timestamp})}" alt="captcha"/>
                     </div>
+                    <div  class="mb-3">
                     <input type="text" class="form-control shadow" id="captcha" name="captcha" placeholder="Írd be a képen látható kódot" required/>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-dark w-100 shadow" id="loginBtn" disabled>Bejelentkezés</button>
